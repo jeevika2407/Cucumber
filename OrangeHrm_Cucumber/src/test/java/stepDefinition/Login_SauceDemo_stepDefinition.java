@@ -6,17 +6,34 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
 
 public class Login_SauceDemo_stepDefinition {
+	
     WebDriver driver;
     
-    @Given("I am on the sauce demo Login Page")
-    public void i_am_on_the_sauce_demo_login_page() {
+    @Before
+    public void setup() {
+        System.out.println("Launching browser before scenario");
         driver = new ChromeDriver();
-        driver.get("https://www.saucedemo.com/");
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    }
+
+    @After
+    public void tearDown() {
+        System.out.println("Closing browser after scenario");
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @Given("I am on the sauce demo Login Page")
+    public void i_am_on_the_sauce_demo_login_page() {
+        driver.get("https://www.saucedemo.com/");
     }
 
     @When("User provides valid credentials")
