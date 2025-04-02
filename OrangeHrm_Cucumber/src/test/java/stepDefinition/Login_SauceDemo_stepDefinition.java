@@ -5,30 +5,54 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.Assert;
 
 import io.cucumber.java.After;
+import io.cucumber.java.AfterStep;
 import io.cucumber.java.Before;
+import io.cucumber.java.BeforeStep;
 import io.cucumber.java.en.*;
 
 public class Login_SauceDemo_stepDefinition {
-	
-    WebDriver driver;
-    
-    @Before
-    public void setup() {
-        System.out.println("Launching browser before scenario");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-    }
 
-    @After
-    public void tearDown() {
-        System.out.println("Closing browser after scenario");
-        if (driver != null) {
-            driver.quit();
-        }
+	    WebDriver driver;
+
+	    @Before("@ChromeBrowser")
+	    public void setupChrome() {
+	        System.out.println("Launching Chrome browser before scenario");
+	        driver = new ChromeDriver();
+	        initializeDriver();
+	    }
+
+	    @Before("@EdgeBrowser")
+	    public void setupEdge() {
+	        System.out.println("Launching Edge browser before scenario");
+	        driver = new EdgeDriver();
+	        initializeDriver();
+	    }
+
+	    private void initializeDriver() {
+	        driver.manage().window().maximize();
+	        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	    }
+
+	    @After
+	    public void tearDown() {
+	        System.out.println("Closing browser after scenario");
+	        if (driver != null) {
+	            driver.quit();
+	        }
+	    }
+    
+    @BeforeStep
+    public void beforeStep() {
+    	System.out.println("--before step--");
+    }
+    
+    @AfterStep
+    public void afterStep() {
+    	System.out.println("--after step--");
     }
 
     @Given("I am on the sauce demo Login Page")
